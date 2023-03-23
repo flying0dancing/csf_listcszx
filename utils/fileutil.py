@@ -1,8 +1,8 @@
 import os.path
-import datetime
-from utils import ziputil
+import datetime,logging
+from utils import ziputil,Logger
 from utils.acronymcatalogs import AcronymCatalogs
-
+logger=logging.getLogger('utils.fileutil')
 '''
 @return files total size.
 '''
@@ -162,33 +162,33 @@ def verifyResult(searchFolder,dict):
         if os.path.isdir(file_name):
             list_ver=dict.get(name)
             if list_ver is None:
-                print('fail: folder{} is not covered in testing scope.'.format(name))
+                logger.info('fail: folder{} is not covered in testing scope.'.format(name))
                 missscount=missscount+1
             else:
-                print('[{}]'.format(name))
+                logger.info('[{}]'.format(name))
                 subfiles=os.listdir(file_name)
                 for subfile in subfiles:
                     subfile_name=os.path.join(file_name, subfile)
                     if os.path.isfile(subfile_name):
                         if subfile in list_ver:
-                            print('pass: {}'.format(subfile))
+                            logger.info('pass: {}'.format(subfile))
                             list_ver.remove(subfile)
                             passcount=passcount+1
                         else:
-                            print('fail: {} not covered in testing scope, details: full name:{}'.format(subfile, subfile_name))
+                            logger.info('fail: {} not covered in testing scope, details: full name:{}'.format(subfile, subfile_name))
                             missscount = missscount + 1
                 dict[name]=list_ver
         else:
-            print('fail: folder{} is not covered in testing scope.'.format(name))
+            logger.info('fail: folder{} is not covered in testing scope.'.format(name))
             missscount = missscount + 1
     for k, v in dict.items():
         for value in v:
-            print("fail:miss {} in [{}]".format(value,k))
+            logger.info("fail:miss {} in [{}]".format(value,k))
             failcount = failcount + 1
     endtime = datetime.datetime.now()
-    print("search folder {} used time {} ms".format(searchFolder,
+    logger.info("search folder {} used time {} ms".format(searchFolder,
                                                     round((endtime - starttime).microseconds / 1000, 2)))
-    print("verify totoal:{}, pass:{},fail:{},miss:{}".format(passcount+failcount+missscount,passcount,failcount,missscount))
+    logger.info("verify totoal:{}, pass:{}, fail:{}, miss:{}".format(passcount+failcount+missscount,passcount,failcount,missscount))
 
 
 def appendFileToDict(dict, key,value):

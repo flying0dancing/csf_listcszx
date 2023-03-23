@@ -2,18 +2,22 @@
 
 # Press Shift+F10 to execute it or replace it with your code.
 # Press Double Shift to search everywhere for classes, files, tool windows, actions, and settings.
-import utils.fileutil
-import datetime
+#import utils.fileutil
+import datetime,logging
+from utils import fileutil,Logger
+logger=logging.getLogger('main')
 def verify(cszx_folder,video_folder,verify_folder):
     # Use a breakpoint in the code line below to debug your script.
-    print('=' * 10+'begin searching'+'=' * 10)
+    logger.info('=' * 10+'begin searching'+'=' * 10)
+    logger.info('search cszx and algo folder: {}'.format(cszx_folder))
+    logger.info('search video folder: {}'.format(video_folder))
     dict_result = {}
     starttime = datetime.datetime.now()
-    totalsize = utils.fileutil.traverse_cszxFolder(cszx_folder, dict_result)
-    totalsize = totalsize + utils.fileutil.traverse_videoFolder(video_folder, dict_result)
+    totalsize = fileutil.traverse_cszxFolder(cszx_folder, dict_result)
+    totalsize = totalsize + fileutil.traverse_videoFolder(video_folder, dict_result)
     endtime = datetime.datetime.now()
-    print("totoal size: {} MB, used time: {} ms.".format(round(totalsize, 2), round((endtime - starttime).microseconds/1000,2)))
-    print('=' * 10+'end searching'+'=' * 10)
+    logger.info("totoal size: {} MB, used time: {} ms.".format(round(totalsize, 2), round((endtime - starttime).microseconds/1000,2)))
+    logger.info('=' * 10+'end searching'+'=' * 10)
     '''
     比较慢
     dict_result1={}
@@ -25,16 +29,16 @@ def verify(cszx_folder,video_folder,verify_folder):
 
     '''
     # print("totoal1 size: {}, used time1: {} ms.".format(totalsize1,(endtime1-starttime1).microseconds))
-    print('')
+    logger.info('')
 
-    print('=' * 10 + 'start printing result' + '=' * 10)
+    logger.info('=' * 10 + 'start printing searched result' + '=' * 10)
     for k,v in dict_result.items():
-        print("[{}]".format(k))
+        logger.info("[{}]".format(k))
         for value in v:
-            print("    {}".format(value))
-    print('=' * 10 + 'end printing result' + '=' * 10)
-    print('')
-    utils.fileutil.verifyResult(verify_folder, dict_result)
+            logger.info("    {}".format(value))
+    logger.info('=' * 10 + 'end printing searched result' + '=' * 10)
+    logger.info('')
+    fileutil.verifyResult(verify_folder, dict_result)
 
 
 # Press the green button in the gutter to run the script.
