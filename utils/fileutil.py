@@ -125,7 +125,7 @@ def traverse_videoFolder(searchFolder, dict):
                 name_size=round(os.path.getsize(file_name) / 1024 / 1024, 2)
                 size += name_size
                 print("  fullpath: {}, size: {} MB".format(file_name,name_size))
-                appendToDict(dict,key,name)
+                appendToDict(dict,key,newname)
     endtime = datetime.datetime.now()
     print("search videoFolder {} used time {} ms".format(searchFolder, round((endtime - starttime).microseconds / 1000, 2)))
     return size
@@ -212,16 +212,16 @@ def appendToDict(dict, key,*values):
 
 
 def generate_cszxname(fname,identifierStr):
-    result='fname'
     pics_fname=os.path.splitext(fname)
+    result = pics_fname[0]
     if '[' in pics_fname[0]:
         pics_f=pics_fname[0].split('[',1)
         result=acronyn_name(fname)+'['+pics_f[1]+"_"+identifierStr+pics_fname[1]
     return result
 
 def generate_newname_with_acronyn(fname):
-    result='fname'
     pics_fname=os.path.splitext(fname)
+    result = pics_fname[0]
     if '[' in pics_fname[0]:
         pics_f=pics_fname[0].split('[',1)
         result=acronyn_name(fname)+'['+pics_f[1]+pics_fname[1]
@@ -241,8 +241,8 @@ def acronyn_name(fname):
 
 #FL_YYYYMMDD
 def generate_foldername(fname):
-    result=fname
     pics_fname=os.path.splitext(fname)
+    result = pics_fname[0]
     if '[' in pics_fname[0]:
         pics_f=pics_fname[0].split('[',2)
         dateStr = pics_f[1].split('T')[0]
