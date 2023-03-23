@@ -43,7 +43,7 @@ def verify(cszx_folder,video_folder,verify_folder):
 
 # Press the green button in the gutter to run the script.
 if __name__ == '__main__':
-    cszx_folder=r'C:\ProgramData\DEXIS IS\ScanFlow\data'
+    cszx_folder=r'D:\patient_data'
     video_folder=r'C:\ProgramData\DEXIS IS\ScanFlow\data'
     verify_folder = r'D:\patient_data'
     verify(cszx_folder,video_folder,verify_folder)

@@ -245,8 +245,8 @@ def generate_foldername(fname):
     result = pics_fname[0]
     if '[' in pics_fname[0]:
         pics_f=pics_fname[0].split('[',2)
-        dateStr = pics_f[1].split('T')[0]
-        result=acronyn_name(fname)+'_'+dateStr.replace('-','')
+        dateStr = pics_f[1].replace('-','')
+        result=acronyn_name(fname)+'_'+dateStr[:8]
     return result
 
 
