@@ -6,17 +6,17 @@
 import datetime,logging
 from utils import fileutil,Logger
 logger=logging.getLogger('main')
-def verify(cszx_folder,video_folder,verify_folder):
+def verify(cszx_folder,video_folder,verify_folder,start_date,end_date):
     # Use a breakpoint in the code line below to debug your script.
     logger.info('=' * 10+'begin searching'+'=' * 10)
     logger.info('search cszx and algo folder: {}'.format(cszx_folder))
     logger.info('search video folder: {}'.format(video_folder))
     dict_result = {}
     starttime = datetime.datetime.now()
-    totalsize = fileutil.traverse_cszxFolder(cszx_folder, dict_result)
-    totalsize = totalsize + fileutil.traverse_videoFolder(video_folder, dict_result)
+    totalsize = fileutil.traverse_cszxFolder(cszx_folder,start_date,end_date, dict_result)
+    totalsize = totalsize + fileutil.traverse_videoFolder(video_folder,start_date,end_date, dict_result)
     endtime = datetime.datetime.now()
-    logger.info("totoal size: {} MB, used time: {} ms.".format(round(totalsize, 2), round((endtime - starttime).microseconds/1000,2)))
+
     logger.info('=' * 10+'end searching'+'=' * 10)
     '''
     比较慢
@@ -38,14 +38,21 @@ def verify(cszx_folder,video_folder,verify_folder):
             logger.info("    {}".format(value))
     logger.info('=' * 10 + 'end printing searched result' + '=' * 10)
     logger.info('')
-    fileutil.verifyResult(verify_folder, dict_result)
+    trup=fileutil.verifyResult(verify_folder, dict_result)
+    logger.info("searched files' totoal size: {} MB, used time: {} ms.".format(round(totalsize, 2),
+                                                               round((endtime - starttime).microseconds / 1000, 2)))
+
+    return trup
 
 
 # Press the green button in the gutter to run the script.
 if __name__ == '__main__':
     cszx_folder=r'D:\patient_data'
     video_folder=r'C:\ProgramData\DEXIS IS\ScanFlow\data'
-    verify_folder = r'D:\patient_data'
-    verify(cszx_folder,video_folder,verify_folder)
+    verify_folder = r'D:\dc_wr\New folder (4)'
+    start_date=fileutil.getDateByFileSuffix('1.0.8_d133[2023-01-03T12-34-48][1.0.8.201].cszx')
+    end_date=datetime.date.today()
+    resultcount=verify(cszx_folder,video_folder,verify_folder,start_date,end_date)
+    print(resultcount[1])
 
 # See PyCharm help at https://www.jetbrains.com/help/pycharm/

@@ -1,13 +1,24 @@
 from enum import Enum
 class AcronymCatalogs(object):
-    acqDict = {'3': 'Ipl', '4': 'Ipl', '130': 'Ipl', '131': 'Ipl',
+    # acqDict = {'3': 'Impl', '4': 'Impl', '130': 'Impl', '131': 'Impl',
+    #            '6': 'Prp', '7': 'Prp',
+    #            '8': 'Dnt', '9': 'Dnt', '140': 'Dnt', '141': 'Dnt',
+    #            '200': 'Ext', '201': 'Ext', '202': 'Ext',
+    #            '21': 'Impr', '22': 'Impr', '23': 'Impr', '31': 'Impr', '32': 'Impr', '33': 'Impr',
+    #            '41': 'PrpImpr', '42': 'PrpImpr', '43': 'PrpImpr', '51': 'PrpImpr', '52': 'PrpImpr', '53': 'PrpImpr',
+    #            '61': 'ImplImpr', '62': 'ImplImpr', '63': 'ImplImpr', '71': 'ImplImpr', '72': 'ImplImpr', '73': 'ImplImpr',
+    #            '81': 'DntImpr', '82': 'DntImpr', '83': 'DntImpr', '91': 'DntImpr', '92': 'DntImpr', '93': 'DntImpr'}
+    acqDict = {'3': 'Impl', '4': 'Impl', '130': 'Impl', '131': 'Impl',
                '6': 'Prp', '7': 'Prp',
                '8': 'Dnt', '9': 'Dnt', '140': 'Dnt', '141': 'Dnt',
                '200': 'Ext', '201': 'Ext', '202': 'Ext',
-               '21': 'Ipr', '22': 'Ipr', '23': 'Ipr', '31': 'Ipr', '32': 'Ipr', '33': 'Ipr',
-               '41': 'PrpIpr', '42': 'PrpIpr', '43': 'PrpIpr', '51': 'PrpIpr', '52': 'PrpIpr', '53': 'PrpIpr',
-               '61': 'IplIpr', '62': 'IplIpr', '63': 'IplIpr', '71': 'IplIpr', '72': 'IplIpr', '73': 'IplIpr',
-               '81': 'DntIpr', '82': 'DntIpr', '83': 'DntIpr', '91': 'DntIpr', '92': 'DntIpr', '93': 'DntIpr'}
+               '21': 'Impr', '22': 'Impr', '23': 'Impr', '31': 'Impr', '32': 'Impr', '33': 'Impr',
+               '41': 'Impr', '42': 'Impr', '43': 'Impr', '51': 'Impr', '52': 'Impr', '53': 'Impr',
+               '61': 'Impr', '62': 'Impr', '63': 'Impr', '71': 'Impr', '72': 'Impr', '73': 'Impr',
+               '81': 'Impr', '82': 'Impr', '83': 'Impr', '91': 'Impr', '92': 'Impr', '93': 'Impr',
+               '100':'Exb','101':'Exb','102':'Exb','103':'Exb','104':'Exb','105':'Exb','106':'Exb','107':'Exb','108':'Exb','109':'Exb',
+               '110':'Exb','111':'Exb','112':'Exb','113':'Exb','114':'Exb','115':'Exb','116':'Exb','117':'Exb','118':'Exb','119':'Exb',
+               '120':'Exb','121':'Exb','122':'Exb','123':'Exb'}
     def __new__(cls,*args,**kwargs):
         if not hasattr(cls,'_instance'):
             cls._instance=object.__new__(cls)
