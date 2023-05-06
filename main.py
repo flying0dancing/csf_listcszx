@@ -2,9 +2,9 @@
 
 # Press Shift+F10 to execute it or replace it with your code.
 # Press Double Shift to search everywhere for classes, files, tool windows, actions, and settings.
-#import utils.fileutil
+
 import datetime,logging
-from utils import fileutil,Logger
+from utils import FileUtil,Logger,XmlUtil
 logger=logging.getLogger('main')
 def verify(cszx_folder,video_folder,verify_folder,start_date,end_date):
     # Use a breakpoint in the code line below to debug your script.
@@ -13,8 +13,8 @@ def verify(cszx_folder,video_folder,verify_folder,start_date,end_date):
     logger.info('search video folder: {}'.format(video_folder))
     dict_result = {}
     starttime = datetime.datetime.now()
-    totalsize = fileutil.traverse_cszxFolder(cszx_folder,start_date,end_date, dict_result)
-    totalsize = totalsize + fileutil.traverse_videoFolder(video_folder,start_date,end_date, dict_result)
+    totalsize = FileUtil.traverse_Folder(cszx_folder,start_date,end_date, dict_result)
+    totalsize = totalsize + FileUtil.traverse_Folder(video_folder,start_date,end_date, dict_result)
     endtime = datetime.datetime.now()
 
     logger.info('=' * 10+'end searching'+'=' * 10)
@@ -32,14 +32,17 @@ def verify(cszx_folder,video_folder,verify_folder,start_date,end_date):
     logger.info('')
 
     logger.info('=' * 10 + 'start printing searched result' + '=' * 10)
+    filecount=0
     for k,v in dict_result.items():
         logger.info("[{}]".format(k))
-        for value in v:
-            logger.info("    {}".format(value))
+        for key,val in v.items():
+            filecount=filecount+1
+            logger.info("    {} {}, size {}".format(filecount,key,val))
+    logger.info('expected totoal files:{}'.format(filecount))
     logger.info('=' * 10 + 'end printing searched result' + '=' * 10)
     logger.info('')
-    trup=fileutil.verifyResult(verify_folder, dict_result)
-    logger.info("searched files' totoal size: {} MB, used time: {} ms.".format(round(totalsize, 2),
+    trup=FileUtil.verifyResult(verify_folder, dict_result)
+    logger.info("searched totoal size: {} MB, used time: {} ms.".format(round(totalsize, 2),
                                                                round((endtime - starttime).microseconds / 1000, 2)))
 
     return trup
@@ -49,10 +52,10 @@ def verify(cszx_folder,video_folder,verify_folder,start_date,end_date):
 if __name__ == '__main__':
     cszx_folder=r'D:\patient_data'
     video_folder=r'C:\ProgramData\DEXIS IS\ScanFlow\data'
-    verify_folder = r'D:\dc_wr\New folder (4)'
-    start_date=fileutil.getDateByFileSuffix('1.0.8_d133[2023-01-03T12-34-48][1.0.8.201].cszx')
+    verify_folder = r'D:\dc_wr\New folder (3)'
+    start_date=FileUtil.getDateByFileSuffix('1.0.8_d133[2023-01-03T12-34-48][1.0.8.201].cszx')
     end_date=datetime.date.today()
-    resultcount=verify(cszx_folder,video_folder,verify_folder,start_date,end_date)
-    print(resultcount[1])
+    resultcount=verify(XmlUtil.getRawDataFolder(),XmlUtil.getVideoFolder(),verify_folder,start_date,end_date)
+
 
 # See PyCharm help at https://www.jetbrains.com/help/pycharm/
