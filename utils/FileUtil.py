@@ -413,7 +413,10 @@ def identifyFile(fname,searchStartDate,searchEndDate):
             created = datetime.datetime.strptime(dateStr + matchX1.group(4).replace('-', ''), format).date()
             if created <= searchEndDate and created >= searchStartDate:
                 patientname=matchX1.group(1) + '_' + matchX1.group(2)
-                brief_patientname = matchX1.group(1)[0] + matchX1.group(2)[0]
+                if patientname == '_':
+                    brief_patientname = ''
+                else:
+                    brief_patientname = matchX1.group(1)[0] + matchX1.group(2)[0]
                 folder_name = dateStr + '_' + brief_patientname
             #else:
                 #logger.info('file name[{}] is out of searched date, please check.'.format(fname))
