@@ -366,13 +366,19 @@ def searchDcmByCszxName(fname):
     result=''
     fname=os.path.basename(fname) #1.2.528.56.1005.202303281335082956875216.cszx
     pics_fname = os.path.splitext(fname) #[1.2.528.56.1005.202303281335082956875216,.cszx]
+
+    if pics_fname[1].lower()=='.zip':
+        key=pics_fname[0].lower().replace('_records','')
+    else:
+        key=pics_fname[0]
+
     Scanflow_UserData=XmlUtil.getRawDataFolder()
     files = os.listdir(Scanflow_UserData)
 
     for name in files:
         flag=False
         sub_file = os.path.join(Scanflow_UserData, name)
-        if os.path.isdir(sub_file) and name.endswith(pics_fname[0]):
+        if os.path.isdir(sub_file) and name.lower().endswith(key):
 
             dicom_files=os.listdir(sub_file)
             for dicom_name in dicom_files:
@@ -390,13 +396,13 @@ def identifyFile(fname,searchStartDate,searchEndDate):
     brief_patientname=None
     created=None
     format = "%Y%m%d%H%M%S"
-    matchX=re.match(r'^\d\.\d\.\d{3,}\.\d{2,}\.\d{4,}\.(\d{8})(\d{6})\d*\.cszx?$',fname,re.IGNORECASE) # 1.2.528.56.1005.202303281335082956875216.cszx
+    matchX=re.match(r'^\d\.\d\.\d{3,}\.\d{2,}\.\d{4,}\.(\d{8})(\d{6})\d*.*\.(cszx?|mp4|zip)$',fname,re.IGNORECASE) # 1.2.528.56.1005.202303281335082956875216.cszx
     if matchX:
         dateStr=matchX.group(1)
         created = datetime.datetime.strptime(dateStr+matchX.group(2), format).date()
         if created <= searchEndDate and created >= searchStartDate:
             dicomfullname = searchDcmByCszxName(fname)
-            brief_patientname = DicomUtil.getBriefPatientNameFromDicom(dicomfullname)
+            brief_patientname = DicomUtil.getBriefPatientNameFromDicom(dicomfullname).lower()
             folder_name = dateStr + '_' + brief_patientname
         else:
             logger.info('file name[{}] is out of searched date, please check.'.format(fname))
@@ -424,7 +430,7 @@ def generate_newname(fname,patientname,brief_patientname,identifierStr):
     if patientname is not None:
         newname=fname.replace(patientname,brief_patientname)
     else:
-        newname=brief_patientname+fname
+        newname=brief_patientname+'_'+fname
     pics_fname=os.path.splitext(newname)
     extension = pics_fname[1]
     if extension == '.cszx' and identifierStr!='':
@@ -467,6 +473,7 @@ def traverse_Folder(searchFolder,searchStartDate,searchEndDate, dict):
     endtime = datetime.datetime.now()
     print("search folder {} used time {} ms".format(searchFolder,round((endtime - starttime).microseconds/1000,2)))
     return size
+
 def appendDictToDict(dict, key,values):
     sub_exist_dict=dict.get(key)
     if sub_exist_dict is None:
@@ -478,19 +485,25 @@ def appendDictToDict(dict, key,values):
                 #dict[key] = sub_exist_dict
 
 def verifyResultFolderCount(searchFolder):
+    logger.info('')
+    logger.info('=' * 10 + 'start printing actual result' + '=' * 10)
     filecount = 0
     starttime = datetime.datetime.now()
     for root, dirs, files in os.walk(searchFolder):
-        for name in dirs:
-            print('-'*8+'dir'+'-' * 8 )
-            print("[{}]".format(name))
-
-        for name in files:
-            print('-' * 8 + 'file'+'-' * 8 )
-            filecount=filecount+1
-            print("    {} file:{}".format(filecount, name))
+        if dirs:
+            logger.info('-' * 8 + 'folders' + '-' * 8)
+            for name in dirs:
+                logger.info("[{}]".format(name))
+            logger.info('')
+        if files:
+            logger.info('-' * 15 + 'files' + '-' * 15)
+            for name in files:
+                filecount=filecount+1
+                logger.info("    {} file:{}".format(filecount, name))
     endtime = datetime.datetime.now()
-    print("search folder {} used time {} ms".format(searchFolder, round((endtime - starttime).microseconds / 1000, 2)))
+    logger.info("actual result folder {} (contains files {}) used time {} ms".format(searchFolder, filecount, round((endtime - starttime).microseconds / 1000, 2)))
+    logger.info('=' * 10 + 'end printing actual result' + '=' * 10)
+    logger.info('')
     return filecount
 
 

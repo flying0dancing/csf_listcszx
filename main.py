@@ -29,24 +29,26 @@ def verify(cszx_folder,video_folder,verify_folder,start_date,end_date):
 
     '''
     # print("totoal1 size: {}, used time1: {} ms.".format(totalsize1,(endtime1-starttime1).microseconds))
-    logger.info('')
-
-    logger.info('=' * 10 + 'start printing searched result' + '=' * 10)
-    filecount=0
-    for k,v in dict_result.items():
-        logger.info("[{}]".format(k))
-        for key,val in v.items():
-            filecount=filecount+1
-            logger.info("    {} {}, size {}".format(filecount,key,val))
-    logger.info('expected totoal files:{}'.format(filecount))
-    logger.info('=' * 10 + 'end printing searched result' + '=' * 10)
-    logger.info('')
+    printExpectedResult(dict_result)
+    FileUtil.verifyResultFolderCount(verify_folder)
     trup=FileUtil.verifyResult(verify_folder, dict_result)
-    logger.info("searched totoal size: {} MB, used time: {} ms.".format(round(totalsize, 2),
+    logger.info("searched total size: {} MB, used time: {} ms.".format(round(totalsize, 2),
                                                                round((endtime - starttime).microseconds / 1000, 2)))
 
     return trup
+def printExpectedResult(dict_result):
+    logger.info('')
 
+    logger.info('=' * 10 + 'start printing expected result' + '=' * 10)
+    filecount = 0
+    for k, v in dict_result.items():
+        logger.info("[{}]".format(k))
+        for key, val in v.items():
+            filecount = filecount + 1
+            logger.info("    {} {}, size {}".format(filecount, key, val))
+    logger.info('expected total files:{}'.format(filecount))
+    logger.info('=' * 10 + 'end printing expected result' + '=' * 10)
+    logger.info('')
 
 # Press the green button in the gutter to run the script.
 if __name__ == '__main__':

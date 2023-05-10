@@ -24,7 +24,7 @@ def getBriefPatientNameFromDicom(fname):
     if fname!='' and os.path.isfile(fname) :
         ds = pydicom.dcmread(fname, force=True)
         patientname = str(ds.get(0x00100010).value)
-        matchX=re.match(r'^(\w*)\^(\w*)\^.*',patientname)
+        matchX=re.match(r'^(.*)\^(.*)\^.*',patientname)
         if matchX:
             #print('matchX.group()',matchX.group())
             #print('matchX.group()', matchX.group(1))
