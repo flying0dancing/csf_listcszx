@@ -362,7 +362,7 @@ def generate_foldername_bak(fname):
     return result
 
 
-def searchDcmByCszxName(fname):
+def searchDcmByUID(fname):
     result=''
     fname=os.path.basename(fname) #1.2.528.56.1005.202303281335082956875216.cszx
     pics_fname = os.path.splitext(fname) #[1.2.528.56.1005.202303281335082956875216,.cszx]
@@ -401,7 +401,7 @@ def identifyFile(fname,searchStartDate,searchEndDate):
         dateStr=matchX.group(1)
         created = datetime.datetime.strptime(dateStr+matchX.group(2), format).date()
         if created <= searchEndDate and created >= searchStartDate:
-            dicomfullname = searchDcmByCszxName(fname)
+            dicomfullname = searchDcmByUID(fname)
             brief_patientname = DicomUtil.getBriefPatientNameFromDicom(dicomfullname).lower()
             folder_name = dateStr + '_' + brief_patientname
         else:
