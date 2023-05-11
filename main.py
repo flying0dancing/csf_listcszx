@@ -45,17 +45,17 @@ def printExpectedResult(dict_result):
         logger.info("[{}]".format(k))
         for key, val in v.items():
             filecount = filecount + 1
-            logger.info("    {} {}, size {}".format(filecount, key, val))
+            logger.info("    {} {}, size {} MB".format(filecount, key, val))
     logger.info('expected total files:{}'.format(filecount))
     logger.info('=' * 10 + 'end printing expected result' + '=' * 10)
     logger.info('')
 
 # Press the green button in the gutter to run the script.
 if __name__ == '__main__':
-    cszx_folder=r'D:\patient_data'
-    video_folder=r'C:\ProgramData\DEXIS IS\ScanFlow\data'
+    #cszx_folder=r'D:\patient_data'
+    #video_folder=r'C:\ProgramData\DEXIS IS\ScanFlow\data'
     verify_folder = r'D:\dc_wr\New folder (3)'
-    start_date=FileUtil.getDateByFileSuffix('1.0.8_d133[2023-01-03T12-34-48][1.0.8.201].cszx')
+    start_date=FileUtil.getDateByFileSuffix('1.0.8_d133[2023-02-10T12-34-48][1.0.8.201].cszx')
     end_date=datetime.date.today()
     resultcount=verify(XmlUtil.getRawDataFolder(),XmlUtil.getVideoFolder(),verify_folder,start_date,end_date)
 

@@ -493,16 +493,20 @@ def verifyResultFolderCount(searchFolder):
     filecount = 0
     starttime = datetime.datetime.now()
     for root, dirs, files in os.walk(searchFolder):
+        logger.info("[{}]".format(root))
         if dirs:
             logger.info('-' * 8 + 'folders' + '-' * 8)
             for name in dirs:
-                logger.info("[{}]".format(name))
-            logger.info('')
+                logger.info("    {}".format(name))
+
         if files:
-            logger.info('-' * 15 + 'files' + '-' * 15)
+            logger.info('-' * 25 + 'files' + '-' * 25)
             for name in files:
                 filecount=filecount+1
-                logger.info("    {} file:{}".format(filecount, name))
+                #logger.info("    {} file:{}".format(filecount, name))
+                size = round(os.path.getsize(os.path.join(root,name)) / 1024 / 1024, 2)
+                logger.info("    {} {}, size {} MB".format(filecount, name, size))
+        logger.info('')
     endtime = datetime.datetime.now()
     logger.info("actual result folder {} (contains files {}) used time {} ms".format(searchFolder, filecount, round((endtime - starttime).microseconds / 1000, 2)))
     logger.info('=' * 10 + 'end printing actual result' + '=' * 10)
